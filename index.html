@@ -1,75 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ABES Engineering College - Online Book Store Registration</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Currency Converter</title>
 </head>
+
 <body>
-  <div class="container">
-    <header>
-      <img src="https://www.facultyplus.com/wp-content/uploads/2023/01/abesphoto.jpg" alt="ABES Logo" class="logo">
-      <h1>ABES Engineering College</h1>
-      <h2>Online Book Store Registration</h2>
-    </header>
 
-    <form id="registrationForm" onsubmit="return validateForm()">
+  <h2>Currency Converter</h2>
 
-      <div class="form-group">
-        <label for="name">Full Name:</label>
-        <input type="text" id="name" placeholder="Enter your full name">
-      </div>
+  <input id="amount" type="number" placeholder="Amount">
 
-      <div class="form-group">
-        <label for="email">Email ID:</label>
-        <input type="email" id="email" placeholder="Enter your email (optional)">
-      </div>
+  <select id="from">
+    <option>USD</option>
+    <option>INR</option>
+    <option>EUR</option>
+    <option>GBP</option>
+  </select>
 
-      <div class="form-group">
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" placeholder="Enter your phone number (optional)">
-      </div>
+  <select id="to">
+    <option>INR</option>
+    <option>USD</option>
+    <option>EUR</option>
+    <option>GBP</option>
+  </select>
 
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" placeholder="Enter your password">
-      </div>
+  <button onclick="convert()">Convert</button>
 
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password:</label>
-        <input type="password" id="confirmPassword" placeholder="Re-enter your password (optional)">
-      </div>
+  <h3 id="result"></h3>
 
-      <div class="form-group">
-        <label>Gender:</label>
-        <div class="gender">
-          <label><input type="radio" name="gender" value="Male"> Male</label>
-          <label><input type="radio" name="gender" value="Female"> Female</label>
-          <label><input type="radio" name="gender" value="Other"> Other</label>
-        </div>
-      </div>
+  <script>
+    const API_KEY = "4f4752b31f840a46553e88cb";
 
-      <div class="form-group">
-        <label for="course">Course:</label>
-        <select id="course">
-          <option value="">-- Select Course --</option>
-          <option value="CSE">Computer Science Engineering</option>
-          <option value="ECE">Electronics and Communication</option>
-          <option value="ME">Mechanical Engineering</option>
-          <option value="CE">Civil Engineering</option>
-          <option value="IT">Information Technology</option>
-        </select>
-      </div>
+    async function convert() {
+      let amount = document.getElementById("amount").value;
+      let from = document.getElementById("from").value;
+      let to = document.getElementById("to").value;
 
-      <button type="submit" class="btn">Register</button>
-    </form>
+      let res = await fetch(
+        `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${from}`
+      );
 
-    <footer>
-      <p>Designed by <span>AMIT SINGH</span></p>
-    </footer>
-  </div>
+      let data = await res.json();
+      let rate = data.conversion_rates[to];
 
-  <script src="script.js"></script>
+      document.getElementById("result").innerText =
+        `${amount} ${from} = ${(amount * rate).toFixed(2)} ${to}`;
+    }
+  </script>
+
 </body>
 </html>
